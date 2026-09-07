@@ -1,18 +1,18 @@
 # Goveia Imports
 
-Catálogo online de iPhones desenvolvida em **PHP puro com arquitetura MVC**, HTML, CSS e JavaScript. O fechamento de pedidos é feito via **WhatsApp**, sem checkout ou pagamento online.
+Catálogo online de iPhones desenvolvido em **PHP puro com arquitetura MVC**, HTML, CSS e JavaScript. O fechamento de pedidos é feito via **WhatsApp**, sem checkout ou pagamento online.
 
 > Projeto em desenvolvimento contínuo — este README é atualizado conforme novas funcionalidades são adicionadas.
 
 ## Visão geral
 
-O site foi desenvolvido priorizando o uso em dispositivos móbile, pois a Goveia-Imports trabalha diretamente com a divulgação do site pelo instagram.
+O site foi desenvolvido priorizando o uso em dispositivos mobile, pois a Goveia Imports trabalha diretamente com a divulgação do site pelo Instagram.
 
-O site apresenta os produtos por seção decrescente, exibindo primeiro, iPhone 17, iPhone 16, iPhone 15... 
+O site apresenta os produtos por seção decrescente, exibindo primeiro iPhone 17, iPhone 16, iPhone 15...
 
-No móbile cada linha possui sua própria seção com rolagem horizontal de cards, informações do aparelho, preço e botão de compra, logo abaixo bolinhas indicadoras para melhorar a navegação em dispositivos móveis!
+No mobile, cada linha possui sua própria seção com rolagem horizontal de cards, informações do aparelho, preço e botão de compra, com bolinhas indicadoras logo abaixo para melhorar a navegação em dispositivos móveis.
 
-Em desktop não apresenta bolinhas indicadoras, os aparelhos são divididos por linhas que contem até quatro aparelhos.
+Em desktop não aparecem as bolinhas indicadoras: os aparelhos são organizados em uma grade que se ajusta automaticamente à largura da tela, dividida por linha.
 
 O painel administrativo permite:
 
@@ -25,7 +25,7 @@ O painel administrativo permite:
 
 ## Tecnologias
 
-- PHP 8.2+
+- PHP 8.1+ (testado com PHP 8.2 no ambiente Docker local)
 - MySQL 8
 - PDO com prepared statements
 - Apache e `.htaccess`
@@ -102,6 +102,17 @@ Abra no navegador:
 http://localhost:8080
 ```
 
+## Variáveis de ambiente
+
+| Variável | Descrição |
+| --- | --- |
+| `APP_ENV` | Ambiente da aplicação (`local`, `production`) |
+| `DB_HOST` | Host do banco de dados MySQL |
+| `DB_PORT` | Porta do MySQL (padrão `3306`) |
+| `DB_NAME` | Nome do banco de dados |
+| `DB_USER` | Usuário do banco de dados |
+| `DB_PASSWORD` | Senha do banco de dados |
+
 ## Acesso administrativo local
 
 Depois de executar o seed:
@@ -137,6 +148,14 @@ Essas credenciais são apenas para desenvolvimento local. Altere-as antes de qua
 - Uploads aceitam somente imagens JPG, JPEG, PNG e WEBP.
 - Rotas administrativas exigem sessão autenticada.
 
+## Implantação em produção
+
+- Nunca deixe `seed.php` ou `migrate.php` acessíveis publicamente depois de usados uma vez — apague-os do servidor após a configuração inicial.
+- Troque a senha padrão do usuário `admin` (gerando um novo hash com `password_hash()`) antes de entregar o site ao cliente.
+- Confirme que o `.htaccess` foi enviado ao servidor e bloqueia o acesso direto a arquivos ocultos (`.env` incluso).
+- Configure o `.env` de produção com as credenciais reais do banco de dados da hospedagem.
+- Confirme que a hospedagem oferece PHP 8.1 ou superior antes de publicar.
+
 ## Arquivos importantes
 
 - [`index.php`](index.php): front controller da aplicação.
@@ -147,7 +166,6 @@ Essas credenciais são apenas para desenvolvimento local. Altere-as antes de qua
 - [`app/Views/admin_dashboard.php`](app/Views/admin_dashboard.php): painel de estoque.
 - [`docker-compose.yml`](docker-compose.yml): ambiente PHP + MySQL.
 
-
 ## Licença
 
-Projeto privado — uso interno da Goveia-Imports. Sem licença de distribuição pública definida.
+Projeto privado — uso interno da Goveia Imports. Sem licença de distribuição pública definida.
