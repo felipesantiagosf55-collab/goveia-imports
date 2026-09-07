@@ -143,8 +143,9 @@ header nav {
     color: var(--text-primary);
     font-weight: 500;
     outline: none;
-    appearance: none; /* Remove seta padrão */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='12' height='12' fill='%238E8E93' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+    appearance: none; 
+    /* CORREÇÃO: URL do SVG corrigida e codificada corretamente */
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://w3.org' width='12' height='12' fill='%238E8E93' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
 }
@@ -157,16 +158,12 @@ header nav {
 }
 .hero {
     text-align: center;
-    /* Cria o fundo em formato de caixa suave usando as cores do seu tema */
     background: linear-gradient(135deg, rgba(0, 122, 255, 0.03), rgba(0, 122, 255, 0.08));
     border: 1px solid var(--border-color);
-    
-    /* Desenho idêntico ao da imagem */
     border-radius: 24px; 
     padding: 40px 20px;
     margin: 24px 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
-    
     transition: all 0.3s ease;
 }
 body.dark-theme .hero {
@@ -179,8 +176,6 @@ body.dark-theme .hero {
     letter-spacing: -1px;
     text-transform: uppercase;
     margin-bottom: 12px;
-    
-    /* Efeito Mestre: Texto com Gradiente usando o Azul do seu Root */
     background: linear-gradient(90deg, var(--accent-blue), #435b2b, var(--accent-blue));
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -195,12 +190,15 @@ body.dark-theme .hero {
     margin: 0;
     opacity: 0.9;
 }
+
+/* CORREÇÃO: Unificação da vitrine mobile em um lugar só */
 .vitrine {
     display: flex;
     flex-direction: column;
     gap: 18px;
     padding: 16px;
 }
+
 .produto-card {
     background-color: var(--bg-card);
     border-radius: 18px;
@@ -226,6 +224,7 @@ body.dark-theme .hero {
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 20px;
+    z-index: 2;
 }
 .produto-imagem {
     width: 100%;
@@ -418,97 +417,309 @@ footer {
     font-size: 0.75rem;
     color: var(--text-secondary);
 }
-@media (min-width: 992px) {
-    .hero {
-        max-width: 1160px;
-        margin: 30px auto 10px auto;
-        padding: 50px 20px;
-    }
-    .hero h1 {
-        font-size: 2.6rem;
-    }
+
+/* CARROSSEL HORIZONTAL DE PRODUTOS */
+.linha-produtos {
+    width: 100%;
+}
+.linha-produtos > h2 {
+    text-align: left;
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 12px;
+    margin: 8px 0 12px;
+}
+
+/* No mobile, mantém o carrossel, mas ESCONDE as barras de rolagem feias */
+.produtos-grid {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    padding: 4px 2px 14px;
+    
+    scrollbar-width: none; /* Esconde a barra no Firefox */
+}
+/* Esconde a barra de rolagem no Chrome, Safari e Edge (Mobile) */
+.produtos-grid::-webkit-scrollbar {
+    display: none; 
+}
+
+.produtos-grid .produto-card {
+    flex: 0 0 min(310px, 82vw);
+    position: relative;
+    top: auto;
+    scroll-snap-align: start;
 }
 @media (min-width: 992px) {
-    main {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
-    .vitrine {
+    /* Transforma o carrossel horizontal em um Grid que quebra linhas automaticamente */
+    .produtos-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        padding: 20px 0;
+        grid-template-columns: repeat(auto-fill, minmax(282px, 1fr)); /* Distribui os itens sozinhos e joga o 5º para baixo */
+        gap: 20px;
+        overflow-x: visible; /* Remove completamente a rolagem */
+        padding: 4px 0 14px;
     }
-    .produto-card {
-        background-color: var(--bg-card);
-        border-radius: 14px;
-        padding: 24px;
-        border: 1px solid var(--border-color);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .produto-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
-    .produto-imagem {
+
+    /* Reseta a propriedade flex do mobile para o card se adaptar ao tamanho do Grid */
+    .produtos-grid .produto-card {
+        flex: unset; 
         width: 100%;
-        height: 220px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
     }
-    .produto-imagem img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+    
+    /* ... mantenha o restante das suas regras do @media (min-width: 992px) aqui para baixo ... */
+}
+/* Container das bolinhas */
+.carrossel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+/* Estilo padrão da bolinha */
+.indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #D1D1D6; /* Cinza claro padrão */
+    transition: all 0.3s ease;
+}
+
+/* Bolinha ativa correspondente ao card na tela */
+.indicator-dot.active {
+    background-color: #65C466; /* O verde dos seus botões */
+    transform: scale(1.2); /* Dá um leve destaque na bolinha ativa */
+}
+
+/* ESCONDER AS BOLINHAS NO DESKTOP */
+@media (min-width: 992px) {
+    .carrossel-indicators {
+        display: none !important;
     }
-    .produto-info {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-    }
-    .p-preco {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--accent-blue);
-        margin-bottom: 16px;
-    }
-    .p-detalhes {
-        font-size: 0.8rem;
-        color: var(--text-secondary);
-        margin-bottom: 16px;
-        border: none;
-        padding: 0;
-    }
-    .btn-comprar {
-        background-color: var(--accent-blue);
-        color: #FFFFFF;
-        font-size: 0.95rem;
-        font-weight: 600;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        transition: filter 0.2s ease;
-    }
-    .btn-comprar:hover {
-        filter: brightness(0.9);
-    }
-    .tag-condicao {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 6px;
-    }
+}
+/* ==========================================
+   3. PAINEL ADMINISTRATIVO (DASHBOARD / LOGIN)
+   ========================================== */
+.admin-body {
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.login-card, .dash-card {
+    width: 100%;
+    max-width: 760px;
+    background: #1C1C1E;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: 32px;
+}
+.login-card { 
+    max-width: 450px; 
+}
+.admin-title { 
+    color: #fff; 
+    font-size: 1.4rem; 
+    margin: 0; 
+    text-align: center; 
+}
+.dash-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 16px; 
+    margin-bottom: 24px; 
+    padding-bottom: 16px; 
+    border-bottom: 1px solid rgba(255,255,255,.08); 
+}
+.admin-form-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+    margin-bottom: 20px; 
+}
+.admin-input, .admin-select { 
+    width: 100%; 
+    padding: 14px; 
+    border: 1px solid rgba(255,255,255,.1); 
+    border-radius: 10px; 
+    background: #2C2C2E; 
+    color: #fff; 
+    font-size: .95rem; outline: none;
+}
+.senha-wrapper { 
+    position: relative; 
+    width: 100%; 
+}
+.senha-wrapper .admin-input { 
+    padding-right: 44px; 
+}
+.senha-wrapper #olhoIcone { 
+    position: absolute; 
+    right: 14px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    color: #8E8E93; 
+    cursor: pointer; 
+    font-size: 1rem; 
+}
+.senha-wrapper #olhoIcone:hover { 
+    color: #fff; 
+}
+.admin-label { 
+    color: #AEAEB2; 
+    font-size: .85rem; 
+}
+.admin-btn { 
+    width: 100%; 
+    padding: 14px; 
+    border: 0; 
+    border-radius: 100px; 
+    background: #0A84FF; 
+    color: #fff; 
+    font-size: .95rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+}
+.btn-logout { 
+    color: #FF453A; 
+    text-decoration: none; 
+    font-size: .85rem; 
+    font-weight: 600; 
+    white-space: nowrap; 
+}
+.erro-msg, 
+.flash-success { 
+    margin-bottom: 16px; 
+    text-align: center; 
+    font-size: .85rem; 
+}
+.erro-msg { 
+    color: #FF453A; 
+}
+.flash-success { 
+    color: #30D158; 
+}
+.estoque-section { 
+    margin-top: 30px; 
+    padding-top: 20px; 
+    border-top: 1px solid rgba(255,255,255,.08); 
+}
+.admin-section-title { 
+    color: #fff; 
+    font-size: 1.1rem; 
+    text-align: left; 
+}
+.category-pills { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin: 12px 0 18px; 
+}
+.category-pill { 
+    padding: 8px 12px; 
+    border: 1px solid rgba(255,255,255,.12); 
+    border-radius: 20px; 
+    background: #2C2C2E; 
+    color: #AEAEB2; 
+    cursor: pointer; 
+}
+.category-pill.active { 
+    background: #0A84FF; 
+    color: #fff; 
+    border-color: #0A84FF; 
+}
+.estoque-table-wrapper { 
+    overflow-x: auto; 
+    margin-top: 16px; 
+}
+.estoque-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    color: #AEAEB2; 
+    font-size: .85rem; 
+}
+.estoque-table th, .estoque-table td { 
+    padding: 12px 5px; 
+    text-align: left; 
+    border-bottom: 1px solid rgba(255,255,255,.06); 
+}
+.estoque-table th { 
+    color: #fff; 
+}
+.estoque-table strong { 
+    color: #fff; 
+}
+.estoque-table td:nth-child(3) { 
+    color: #0A84FF; 
+    font-weight: 600; 
+}
+.estoque-table td:last-child { 
+    text-align: center; 
+}
+.estoque-thumb { 
+    width: 48px; 
+    height: 48px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    display: block; 
+    background: #2C2C2E; 
+}
+.delete-button { 
+    padding: 5px; 
+    border: 0; 
+    background: transparent; 
+    color: #FF453A; 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+}
+.produto-imagem img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.produto-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.p-preco {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 16px;
+}
+.p-detalhes {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    border: none;padding: 0;
+}
+.btn-comprar {
+    background-color: var(--accent-blue);
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;width: 100%;
+    transition: filter 0.2s ease;
+}
+.btn-comprar:hover {
+    filter: brightness(0.9);
+}
+.tag-condicao {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
 }

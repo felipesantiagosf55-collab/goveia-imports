@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const header = document.querySelector('header');
     const vitrine = document.querySelector('.vitrine');
     if (!header || !vitrine) return;
-    const cards = Array.from(vitrine.querySelectorAll('.produto-card'));
+    const cards = Array.from(vitrine.querySelectorAll(':scope > .produto-card'));
     if (cards.length === 0) return;
     const DESKTOP_BREAKPOINT = 992;
     function atualizarAlturaHeader() {
@@ -112,3 +112,38 @@ const maskOptions = {
   mask: '(00) 0 0000-0000'
 };
 const mask = IMask(element, maskOptions);
+document.querySelectorAll('.linha-produtos').forEach(linha => {
+    const grid = linha.querySelector('.produtos-grid');
+    const indicatorsContainer = linha.querySelector('.carrossel-indicators');
+    if (!grid || !indicatorsContainer) return;
+
+    const cards = grid.querySelectorAll('.produto-card');
+    
+    // 1. Cria dinamicamente uma bolinha para cada card encontrado
+    cards.forEach((card, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('indicator-dot');
+        if (index === 0) dot.classList.add('active'); // Primeira bolinha começa ativa
+        indicatorsContainer.appendChild(dot);
+    });
+
+    const dots = indicatorsContainer.querySelectorAll('.indicator-dot');
+
+    // 2. Atualiza a bolinha verde com base na rolagem lateral do carrossel
+    grid.addEventListener('scroll', () => {
+        const scrollLeft = grid.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 18; // Largura do card + o gap (18px)
+        
+        // Calcula o índice do card que está mais visível no centro/esquerda
+        const activeIndex = Math.round(scrollLeft / cardWidth);
+
+        // Atualiza a classe active nas bolinhas
+        dots.forEach((dot, index) => {
+            if (index === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    });
+});
