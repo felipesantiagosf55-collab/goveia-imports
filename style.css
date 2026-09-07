@@ -143,8 +143,7 @@ header nav {
     color: var(--text-primary);
     font-weight: 500;
     outline: none;
-    appearance: none; 
-    /* CORREÇÃO: URL do SVG corrigida e codificada corretamente */
+    appearance: none;
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://w3.org' width='12' height='12' fill='%238E8E93' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
@@ -190,8 +189,6 @@ body.dark-theme .hero {
     margin: 0;
     opacity: 0.9;
 }
-
-/* CORREÇÃO: Unificação da vitrine mobile em um lugar só */
 .vitrine {
     display: flex;
     flex-direction: column;
@@ -428,8 +425,6 @@ footer {
     padding-left: 12px;
     margin: 8px 0 12px;
 }
-
-/* No mobile, mantém o carrossel, mas ESCONDE as barras de rolagem feias */
 .produtos-grid {
     display: flex;
     gap: 18px;
@@ -452,7 +447,6 @@ footer {
     scroll-snap-align: start;
 }
 @media (min-width: 992px) {
-    /* Transforma o carrossel horizontal em um Grid que quebra linhas automaticamente */
     .produtos-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(282px, 1fr)); /* Distribui os itens sozinhos e joga o 5º para baixo */
@@ -460,14 +454,10 @@ footer {
         overflow-x: visible; /* Remove completamente a rolagem */
         padding: 4px 0 14px;
     }
-
-    /* Reseta a propriedade flex do mobile para o card se adaptar ao tamanho do Grid */
     .produtos-grid .produto-card {
         flex: unset; 
         width: 100%;
     }
-    
-    /* ... mantenha o restante das suas regras do @media (min-width: 992px) aqui para baixo ... */
 }
 /* Container das bolinhas */
 .carrossel-indicators {
@@ -489,19 +479,14 @@ footer {
 
 /* Bolinha ativa correspondente ao card na tela */
 .indicator-dot.active {
-    background-color: #65C466; /* O verde dos seus botões */
-    transform: scale(1.2); /* Dá um leve destaque na bolinha ativa */
+    background-color: #65C466;
+    transform: scale(1.2); 
 }
-
-/* ESCONDER AS BOLINHAS NO DESKTOP */
 @media (min-width: 992px) {
     .carrossel-indicators {
         display: none !important;
     }
 }
-/* ==========================================
-   3. PAINEL ADMINISTRATIVO (DASHBOARD / LOGIN)
-   ========================================== */
 .admin-body {
     background: #000;
     color: #fff;
